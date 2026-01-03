@@ -13,13 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // First, try to find a match in the static knowledge base
-    const staticMatch = findExampleByKeyword(input);
-    if (staticMatch && !useLLM) {
-      return NextResponse.json({ result: staticMatch, source: "static" });
-    }
-
-    // If LLM is enabled and API key is available
+    // If LLM is enabled, use AI directly (unlimited possibilities!)
     if (useLLM) {
       const apiKey =
         llmProvider === "openai"
@@ -28,6 +22,7 @@ export async function POST(request: NextRequest) {
 
       if (!apiKey) {
         // Fallback to static if no API key
+        const staticMatch = findExampleByKeyword(input);
         const fallback = staticMatch || getRandomExample();
         return NextResponse.json({
           result: fallback,
@@ -36,7 +31,7 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // Try LLM generation
+      // Try LLM generation first (AI has unlimited possibilities!)
       let llmResult: (Example & { social_post?: string }) | null = null;
 
       if (llmProvider === "openai") {
@@ -49,7 +44,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ result: llmResult, source: "llm" });
       }
 
-      // If LLM fails, fallback to static
+      // If LLM fails, fallback to static (safety net)
+      const staticMatch = findExampleByKeyword(input);
       const fallback = staticMatch || getRandomExample();
       return NextResponse.json({
         result: fallback,
@@ -58,7 +54,8 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Default: use static knowledge base
+    // If LLM is disabled, use static knowledge base
+    const staticMatch = findExampleByKeyword(input);
     const result = staticMatch || getRandomExample();
     return NextResponse.json({ result, source: "static" });
   } catch (error) {

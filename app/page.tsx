@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, Loader2, Sparkles, Copy, Check, Info, Download } from "lucide-react";
+import { ArrowDown, Loader2, Sparkles, Copy, Check, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -75,22 +75,45 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100">
       {/* Header - High End Agency Style */}
-      <header className="container mx-auto px-4 py-16 md:py-24 text-center max-w-4xl">
+      <header className="container mx-auto px-4 py-20 md:py-32 text-center max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="space-y-6"
         >
-          <span className="text-indigo-600 font-bold tracking-widest text-xs md:text-sm uppercase mb-6 block">
-            Propulsé par Agence Cible
-          </span>
-          <h1 className="text-4xl md:text-7xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">
-            Le Traducteur de <span className="text-indigo-600">Valeur</span>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <span className="inline-block text-indigo-600 font-bold tracking-widest text-xs md:text-sm uppercase mb-8 px-4 py-2 bg-indigo-50 rounded-full">
+              Propulsé par Agence Cible
+            </span>
+          </motion.div>
+          
+          <h1 className="text-5xl md:text-8xl font-extrabold text-slate-900 mb-8 tracking-tight leading-[1.1]">
+            Le Traducteur de <br className="md:hidden"/>
+            <span className="text-indigo-600 bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+              Valeur
+            </span>
           </h1>
-          <p className="text-lg md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Arrêtez de vendre des &quot;lits&quot; et des &quot;murs&quot;. <br className="hidden md:block"/>
-            <span className="font-semibold text-slate-800">Commencez à vendre du sommeil, du rêve et des souvenirs.</span>
-          </p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="space-y-4"
+          >
+            <p className="text-xl md:text-3xl font-bold text-slate-800 max-w-3xl mx-auto leading-tight">
+              Transformez vos fonctionnalités en <span className="text-indigo-600">arguments de vente irrésistibles</span>
+            </p>
+            <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Arrêtez de vendre des &quot;lits&quot; et des &quot;murs&quot;. 
+              <br className="hidden md:block"/>
+              <span className="font-semibold text-slate-700">Commencez à vendre du sommeil, du rêve et des souvenirs.</span>
+            </p>
+          </motion.div>
         </motion.div>
       </header>
 
@@ -105,22 +128,28 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-3">
             <Input
               type="text"
-              placeholder="Ex: Piscine chauffée, WiFi gratuit, Restaurant..."
+              placeholder="Ex: Piscine chauffée, WiFi gratuit, Restaurant, Check-in express..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !isLoading && handleTranslate()}
-              className="flex-1 text-lg h-14 md:h-16 border-transparent focus:border-transparent focus:ring-0 bg-slate-50 rounded-xl px-6 placeholder:text-slate-400"
+              className="flex-1 text-lg h-14 md:h-16 border-transparent focus:border-transparent focus:ring-2 focus:ring-indigo-500 bg-slate-50 rounded-xl px-6 placeholder:text-slate-400"
             />
             <Button
               onClick={handleTranslate}
               disabled={isLoading || !input.trim()}
               size="lg"
-              className="h-14 md:h-16 px-8 text-lg font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all hover:scale-105 shadow-lg shadow-indigo-200"
+              className="h-14 md:h-16 px-8 md:px-12 text-lg font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all hover:scale-105 shadow-lg shadow-indigo-200 hover:shadow-indigo-300"
             >
               {isLoading ? (
-                <Loader2 className="animate-spin h-6 w-6" />
+                <>
+                  <Loader2 className="animate-spin h-6 w-6 mr-2" />
+                  <span className="hidden sm:inline">Analyse en cours...</span>
+                </>
               ) : (
-                "Révéler la Valeur"
+                <>
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Révéler la Valeur
+                </>
               )}
             </Button>
           </div>
@@ -133,7 +162,7 @@ export default function Home() {
              className={`text-xs flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${useLLM ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-slate-400 hover:text-slate-600'}`}
            >
               <Sparkles className="w-3 h-3" />
-              {useLLM ? "Mode IA Activé (Génération illimitée)" : "Mode Base de Données"}
+              {useLLM ? "✨ Mode IA : Génération illimitée et unique" : "📚 Mode Base de Données (limité)"}
            </button>
         </div>
       </section>
@@ -269,67 +298,41 @@ export default function Home() {
                 </motion.div>
               )}
 
-            {/* STAP 3: DE WHITEPAPER UPSELL (De Brug naar Video) */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
-                className="mt-8 bg-slate-900 rounded-3xl p-8 md:p-10 text-white relative overflow-hidden"
-              >
-                {/* Decoratieve achtergrond cirkel */}
-                <div className="absolute -top-20 -right-20 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-20 pointer-events-none" />
-                
-                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                  <div className="flex-1 text-center md:text-left">
-                    <div className="inline-block bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">
-                      Étape Suivante
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold mb-3">
-                      Vous avez le texte... <br/>
-                      <span className="text-indigo-400">Maintenant, créez la vidéo.</span>
-                    </h3>
-                    <p className="text-slate-300 mb-6 leading-relaxed">
-                      Une bonne accroche ne suffit pas. Sur Instagram & LinkedIn, c&apos;est la vidéo qui arrête le scroll.
-                      Téléchargez notre guide gratuit : <strong>&quot;Le Guide Ultime de la Vidéo à Haute Conversion.&quot;</strong>
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                      <Button 
-                        size="lg" 
-                        className="bg-white text-slate-900 hover:bg-indigo-50 font-bold gap-2"
-                        onClick={() => window.open('/AgenceCible.pdf', '_blank')} 
-                      >
-                        <Download size={18} />
-                        Télécharger le Guide PDF
-                      </Button>
-                      <Button 
-                        variant="link" 
-                        className="text-slate-400 hover:text-white"
-                        onClick={() => window.open('https://agencecible.fr', '_blank')}
-                      >
-                        Ou laissez-nous filmer pour vous &rarr;
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {/* Visuele representatie van de PDF (Mockup) */}
-                  <div className="w-40 h-56 bg-white rounded shadow-2xl transform rotate-3 flex items-center justify-center flex-shrink-0 border-r-4 border-b-4 border-slate-200">
-                    <div className="text-center p-4">
-                      <span className="text-4xl">📄</span>
-                      <p className="text-slate-900 font-bold mt-4 text-xs tracking-widest uppercase">Guide Vidéo</p>
-                      <p className="text-indigo-600 font-bold text-lg leading-tight mt-1">Haute<br/>Conversion</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
             </motion.div>
           ) : null}
         </AnimatePresence>
       </section>
       
-      {/* Footer minimaliste */}
-      <footer className="py-12 text-center text-slate-400 text-sm border-t border-slate-100 bg-white">
-        <p>© {new Date().getFullYear()} Agence Cible - Perpignan & Pays-Bas</p>
+      {/* Footer */}
+      <footer className="py-16 text-center border-t border-slate-200 bg-white">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="space-y-4"
+          >
+            <p className="text-slate-600 text-sm mb-2">
+              Propulsé par
+            </p>
+            <a 
+              href="https://agencecible.fr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block group"
+            >
+              <h3 className="text-2xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                Agence Cible
+              </h3>
+              <p className="text-sm text-slate-500 mt-1">
+                Perpignan & Pays-Bas
+              </p>
+            </a>
+            <p className="text-xs text-slate-400 mt-6">
+              © {new Date().getFullYear()} Agence Cible. Tous droits réservés.
+            </p>
+          </motion.div>
+        </div>
       </footer>
     </div>
   );
