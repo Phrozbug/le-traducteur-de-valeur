@@ -1,8 +1,10 @@
+
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, Loader2, Sparkles, Copy, Check, Info } from "lucide-react";
+import { ArrowDown, Loader2, Sparkles, Copy, Check, Info, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,7 +23,7 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ExtendedExample | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [useLLM, setUseLLM] = useState(true); // Standaard AAN voor de demo ervaring
+  const [useLLM, setUseLLM] = useState(true); 
   const [copied, setCopied] = useState(false);
 
   const handleTranslate = async () => {
@@ -86,7 +88,7 @@ export default function Home() {
             Le Traducteur de <span className="text-indigo-600">Valeur</span>
           </h1>
           <p className="text-lg md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Arrêtez de vendre des "lits" et des "murs". <br className="hidden md:block"/>
+            Arrêtez de vendre des &quot;lits&quot; et des &quot;murs&quot;. <br className="hidden md:block"/>
             <span className="font-semibold text-slate-800">Commencez à vendre du sommeil, du rêve et des souvenirs.</span>
           </p>
         </motion.div>
@@ -162,10 +164,10 @@ export default function Home() {
               {/* The "Money Headline" */}
               <div className="text-center bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-indigo-50">
                 <h3 className="text-xs md:text-sm font-bold text-indigo-600 uppercase tracking-widest mb-4">
-                  Votre nouvelle phrase d'accroche
+                  Votre nouvelle phrase d&apos;accroche
                 </h3>
                 <p className="text-2xl md:text-5xl font-serif text-slate-900 italic leading-tight">
-                  "{result.copy}"
+                  &quot;{result.copy}&quot;
                 </p>
               </div>
 
@@ -266,6 +268,59 @@ export default function Home() {
                    </div>
                 </motion.div>
               )}
+
+            {/* STAP 3: DE WHITEPAPER UPSELL (De Brug naar Video) */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0 }}
+                className="mt-8 bg-slate-900 rounded-3xl p-8 md:p-10 text-white relative overflow-hidden"
+              >
+                {/* Decoratieve achtergrond cirkel */}
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-20 pointer-events-none" />
+                
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                  <div className="flex-1 text-center md:text-left">
+                    <div className="inline-block bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">
+                      Étape Suivante
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-bold mb-3">
+                      Vous avez le texte... <br/>
+                      <span className="text-indigo-400">Maintenant, créez la vidéo.</span>
+                    </h3>
+                    <p className="text-slate-300 mb-6 leading-relaxed">
+                      Une bonne accroche ne suffit pas. Sur Instagram & LinkedIn, c&apos;est la vidéo qui arrête le scroll.
+                      Téléchargez notre guide gratuit : <strong>&quot;Le Guide Ultime de la Vidéo à Haute Conversion.&quot;</strong>
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                      <Button 
+                        size="lg" 
+                        className="bg-white text-slate-900 hover:bg-indigo-50 font-bold gap-2"
+                        onClick={() => window.open('/AgenceCible.pdf', '_blank')} 
+                      >
+                        <Download size={18} />
+                        Télécharger le Guide PDF
+                      </Button>
+                      <Button 
+                        variant="link" 
+                        className="text-slate-400 hover:text-white"
+                        onClick={() => window.open('https://agencecible.fr', '_blank')}
+                      >
+                        Ou laissez-nous filmer pour vous &rarr;
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Visuele representatie van de PDF (Mockup) */}
+                  <div className="w-40 h-56 bg-white rounded shadow-2xl transform rotate-3 flex items-center justify-center flex-shrink-0 border-r-4 border-b-4 border-slate-200">
+                    <div className="text-center p-4">
+                      <span className="text-4xl">📄</span>
+                      <p className="text-slate-900 font-bold mt-4 text-xs tracking-widest uppercase">Guide Vidéo</p>
+                      <p className="text-indigo-600 font-bold text-lg leading-tight mt-1">Haute<br/>Conversion</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
 
             </motion.div>
           ) : null}
