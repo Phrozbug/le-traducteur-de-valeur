@@ -1,14 +1,14 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Sparkles, Copy, Check, Info } from "lucide-react";
+import { ArrowDown, Loader2, Sparkles, Copy, Check, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Example } from "@/lib/data";
 
+// Type uitbreiden voor de social post
 type ExtendedExample = Example & { social_post?: string };
 
 interface LadderStep {
@@ -47,7 +47,7 @@ export default function Home() {
       
     } catch (error) {
       console.error("Error:", error);
-      alert("Une erreur est survenue.");
+      alert("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
@@ -63,8 +63,8 @@ export default function Home() {
     ? [
         { label: "1. La Fonctionnalité", value: result.feature, step: 1 },
         { label: "2. L'Avantage (Expérience)", value: result.advantage, step: 2 },
-        { label: "3. Le Bénéfice (Business)", value: result.benefit, step: 3 },
-        { label: "4. L'Émotion (Déclencheur)", value: result.emotion, step: 4 },
+        { label: "3. Le Bénéfice (Vie Client)", value: result.benefit, step: 3 },
+        { label: "4. L'Émotion (Ressenti)", value: result.emotion, step: 4 },
       ]
     : [];
 
@@ -78,7 +78,7 @@ export default function Home() {
           transition={{ duration: 0.6 }}
         >
           <span className="text-indigo-600 font-bold tracking-widest text-xs md:text-sm uppercase mb-6 block">
-            Propulsé par Agence Cible
+            PROPULSÉ PAR AGENCE CIBLE
           </span>
           <h1 className="text-4xl md:text-7xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">
             Le Traducteur de <span className="text-indigo-600">Valeur</span>
