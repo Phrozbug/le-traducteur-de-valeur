@@ -6,13 +6,9 @@ interface LLMResponse {
   benefit: string;
   emotion: string;
   copy: string;
-  social_post: string; // De nieuwe "Lead Magnet" output
+  social_post: string;
 }
 
-/**
- * Generate a value ladder using OpenAI API
- * OPTIMIZED PROMPT FOR HIGH-CONVERSION HOSPITALITY COPY + SOCIAL POST
- */
 export async function generateWithLLM(
   input: string,
   apiKey: string
@@ -25,71 +21,34 @@ export async function generateWithLLM(
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o", // Gebruik gpt-4o voor maximale kwaliteit
+        model: "gpt-4o", 
         messages: [
           {
             role: "system",
-            content: `Tu es le Directeur Stratégique d'Agence Cible, expert en copywriting et marketing pour :
-- Campings et hôtels (hospitality)
-- Agences immobilières et promoteurs (real estate)
-- Activités outdoor et tourisme
+            content: `Tu es le Directeur Créatif d'Agence Cible. Tu ne rédiges pas, tu vends du rêve.
 
-TA MISSION : Créer une "Échelle de Valeur" UNIQUE et PERCUTANTE qui transforme une fonctionnalité banale en argument de vente irrésistible.
+TA MISSION :
+Détecte le secteur (Immobilier/Makelaar OU Tourisme/Camping) et transforme l'input en or psychologique.
 
-RÈGLES STRICTES POUR L'ÉCHELLE DE VALEUR :
+RÈGLES CRUCIALES :
+1. DÉTECTION DE CONTEXTE :
+   - Si l'input est "Maison", "Appartement", "Garage", "Jardin" -> Mode AGENT IMMOBILIER (Vendre un style de vie, la sécurité, l'investissement).
+   - Si l'input est "Mobil-home", "Piscine", "Camping", "Animation" -> Mode HOSPITALITY (Vendre les vacances, le lâcher-prise, les souvenirs).
 
-1. FEATURE (La Fonctionnalité) :
-   - Reformule de manière élégante et professionnelle
-   - Évite les termes techniques froids
-   - Exemple : "Piscine chauffée" → "Espace aquatique chauffé toute l'année"
+2. ÉCHELLE DE VALEUR (Ne sois pas générique !) :
+   - FEATURE : L'input.
+   - ADVANTAGE : Le problème immédiat résolu (ex Immo: "Pas de travaux" / ex Camping: "Pas de stress").
+   - BENEFIT (Business/Deep) : 
+     * Immo : Valorisation du bien, Coup de cœur assuré, Revente facile.
+     * Camping : Justification tarif Premium, Fidélisation, Avis 5 étoiles.
+   - EMOTION : Le sentiment profond (Fierté, Statut, Soulagement, Euphorie).
+   - COPY : Une "Punchline" courte (max 12 mots). Pas de "Découvrez notre...". Sois direct.
 
-2. ADVANTAGE (L'Avantage - Le "Comment") :
-   - Décris le problème RÉEL résolu pour le client final
-   - Sois SPÉCIFIQUE et CONCRET
-   - Évite les généralités comme "meilleure expérience"
-   - Exemples BONS : "Fini les réveils en sueur", "Plus besoin de chercher un parking", "Vos enfants ne s'ennuient jamais"
-   - Exemples MAUVAIS : "Confort amélioré", "Service de qualité"
-
-3. BENEFIT (Le Bénéfice Business) :
-   - Chiffre CONCRET si possible (%, €, heures économisées)
-   - Impact business mesurable
-   - Exemples : "Justifie un prix premium de 30%", "Réduit les annulations de 60%", "Augmente le panier moyen de 45€"
-
-4. EMOTION (L'Émotion - Le "Pourquoi") :
-   - Émotion RESSENTIE par le client final OU le propriétaire
-   - Sois PRÉCIS : pas juste "bonheur" mais "Sérénité & Contrôle total" ou "Fierté & Réputation"
-   - Combine 2 émotions si pertinent
-
-5. COPY (La Phrase d'Accroche) :
-   - MAX 10 mots
-   - PERCUTANTE, mémorable
-   - Évite les clichés
-   - Exemples : "La piscine qui justifie votre tarif haut de gamme", "Le parking qui rassure avant même l'arrivée"
-
-6. SOCIAL_POST (Le Post Social) :
-   - 80-120 mots
-   - Ton : Premium, accueillant, qui fait RÊVER
-   - Structure : Hook émotionnel → Bénéfice → CTA
-   - 3-4 emojis STRATÉGIQUES (pas de spam)
-   - CTA clair et actionnable
-   - Pas de hashtags excessifs
-
-CONTEXTE PAR SECTEUR :
-
-HOSPITALITY (Campings/Hôtels) :
-- Focus sur : expérience mémorable, confort, tranquillité, moments partagés
-- Émotions : Sérénité, Fierté, Joie, Évasion, Confort
-
-REAL ESTATE (Makelaars/Promoteurs) :
-- Focus sur : sécurité financière, qualité de vie, investissement, tranquillité d'esprit
-- Émotions : Sécurité, Fierté, Sérénité, Accomplissement, Liberté
-- Bénéfices : Plus-value, économies énergétiques, localisation stratégique
-
-OUTDOOR (Activités) :
-- Focus sur : aventure, découverte, accomplissement, souvenirs
-- Émotions : Liberté, Accomplissement, Découverte, Fierté
-
-IMPORTANT : Sois CRÉATIF et UNIQUE. Chaque réponse doit être sur-mesure, pas générique. Évite les phrases toutes faites.
+3. SOCIAL POST (Le Lead Magnet) :
+   - Rédige un post complet (Instagram/Facebook/LinkedIn).
+   - Ton : Expert mais accessible.
+   - Structure : Accroche (Hook) -> Problème -> Solution (ton Feature) -> Rêve.
+   - Call to Action clair.
 
 FORMAT JSON STRICT :
 {
@@ -101,34 +60,36 @@ FORMAT JSON STRICT :
   "social_post": "..."
 }
 
-Langue : Français impeccable, sans anglicismes inutiles.`,
+EXEMPLE IMMOBILIER :
+Input: "Grand garage"
+Copy: "Vos collections méritent mieux qu'un simple box."
+Social: "Marre de rayer la portière ? Ce garage de 40m² n'attend que votre SUV..."
+
+EXEMPLE CAMPING :
+Input: "Grand parc aquatique"
+Copy: "Épuisez les enfants, savourez le silence."
+
+Langue : Français impeccable et percutant.`,
           },
           {
             role: "user",
-            content: `Transforme cette fonctionnalité en or : "${input}"`,
+            content: `Transforme ceci de manière unique : "${input}"`,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 500,
+        temperature: 0.85, // Hoger gezet voor meer creativiteit/unieke antwoorden
         response_format: { type: "json_object" },
       }),
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("OpenAI API error:", error);
-      return null;
-    }
-
+    if (!response.ok) return null;
     const data = await response.json();
     const content = data.choices[0]?.message?.content;
-
     if (!content) return null;
 
     const parsed: LLMResponse = JSON.parse(content);
 
     return {
-      keywords: [], // LLM heeft geen keywords nodig
+      keywords: [],
       feature: parsed.feature,
       advantage: parsed.advantage,
       benefit: parsed.benefit,
